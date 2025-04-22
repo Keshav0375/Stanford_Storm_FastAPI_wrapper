@@ -219,7 +219,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--output-dir",
         type=str,
-        default="./results/co-storm",
+        default="./results/co-core",
         help="Directory to store the outputs.",
     )
     parser.add_argument(
@@ -228,7 +228,7 @@ if __name__ == "__main__":
         choices=["bing", "you", "brave", "serper", "duckduckgo", "tavily", "searxng"],
         help="The search engine API to use for retrieving information.",
     )
-    # hyperparameters for co-storm
+    # hyperparameters for co-core
     parser.add_argument(
         "--retrieve_top_k",
         type=int,

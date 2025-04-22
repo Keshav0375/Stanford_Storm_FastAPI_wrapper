@@ -23,7 +23,7 @@ This is a minimal user interface for `STORMWikiRunner` which includes the follow
 2. Make sure you set up the API keys following the instructions in the main README file. Create a copy of `secrets.toml` and place it under `.streamlit/`.
 3. Run the following command to start the user interface:
     ```bash
-    streamlit run storm.py
+    streamlit run core.py
     ```
    The user interface will create a `DEMO_WORKING_DIR` directory in the current directory to store the outputs.
 

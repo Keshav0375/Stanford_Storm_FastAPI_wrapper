@@ -15,7 +15,7 @@ with open("requirements.txt", encoding="utf-8") as f:
 
 
 setup(
-    name="knowledge-storm",
+    name="knowledge-core",
     version="1.1.0",
     author="Yijia Shao, Yucheng Jiang",
     author_email="shaoyj@stanford.edu, yuchengj@stanford.edu",

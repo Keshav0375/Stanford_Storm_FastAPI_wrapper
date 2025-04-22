@@ -84,7 +84,7 @@ class AnswerQuestionModule(dspy.Module):
             searched_results: List[Information] = self.retriever.retrieve(
                 list(set(queries)), exclude_urls=[]
             )
-        # update storm information meta to include the question
+        # update core information meta to include the question
         for storm_info in searched_results:
             storm_info.meta["question"] = question
         return queries, searched_results

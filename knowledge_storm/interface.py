@@ -42,7 +42,7 @@ class Information:
     """Class to represent detailed information.
 
     Inherits from Information to include a unique identifier (URL), and extends
-    it with a description, snippets, and title of the storm information.
+    it with a description, snippets, and title of the core information.
 
     Attributes:
         description (str): Brief description.

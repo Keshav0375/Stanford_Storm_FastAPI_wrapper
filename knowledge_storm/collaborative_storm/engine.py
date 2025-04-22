@@ -581,7 +581,7 @@ class CoStormRunner:
 
     def warm_start(self):
         """
-        Warm start co-storm system to conduct background information search in order to build shared conceptual space with user.
+        Warm start co-core system to conduct background information search in order to build shared conceptual space with user.
         This stage is a mini-STORM, spawning multiple LLM agent with different perspective and perform multi-round conversation.
         The knowledge base (i.e. mind map) will be initialize using the collected information.
 

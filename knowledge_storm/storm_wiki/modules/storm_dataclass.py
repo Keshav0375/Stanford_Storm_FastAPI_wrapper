@@ -175,14 +175,14 @@ class StormArticle(Article):
         self, new_info_list: List[Information], index_to_keep=None
     ) -> Dict[int, int]:
         """
-        Merges new storm information into existing references and updates the citation index mapping.
+        Merges new core information into existing references and updates the citation index mapping.
 
         Args:
-        new_info_list (List[Information]): A list of dictionaries representing new storm information.
+        new_info_list (List[Information]): A list of dictionaries representing new core information.
         index_to_keep (List[int]): A list of index of the new_info_list to keep. If none, keep all.
 
         Returns:
-        Dict[int, int]: A dictionary mapping the index of each storm information piece in the input list
+        Dict[int, int]: A dictionary mapping the index of each core information piece in the input list
                         to its unified citation index in the references.
         """
         citation_idx_mapping = {}
