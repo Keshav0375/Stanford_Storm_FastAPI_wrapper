@@ -49,6 +49,11 @@ def main(args):
         "temperature": 1.0,
         "top_p": 0.9,
     }
+    openai_4o_kwargs = {
+        "api_key": os.getenv("AZURE_API_KEY_4O"),
+        "temperature": 1.0,
+        "top_p": 0.9,
+    }
 
     ModelClass = (
         OpenAIModel if os.getenv("OPENAI_API_TYPE") == "openai" else AzureOpenAIModel
@@ -56,12 +61,15 @@ def main(args):
     # If you are using Azure service, make sure the model name matches your own deployed model name.
     # The default name here is only used for demonstration and may not match your case.
     gpt_35_model_name = (
-        "gpt-3.5-turbo" if os.getenv("OPENAI_API_TYPE") == "openai" else "gpt-35-turbo"
+        "gpt-3.5-turbo" if os.getenv("OPENAI_API_TYPE") == "openai" else "slideoo-chat-1"
     )
-    gpt_4_model_name = "gpt-4o"
+    gpt_4_model_name = "slideoo-2-gpt-40"
     if os.getenv("OPENAI_API_TYPE") == "azure":
-        openai_kwargs["api_base"] = os.getenv("AZURE_API_BASE")
+        openai_kwargs["azure_endpoint"] = os.getenv("AZURE_API_BASE")
         openai_kwargs["api_version"] = os.getenv("AZURE_API_VERSION")
+        openai_4o_kwargs["azure_endpoint"] = os.getenv("AZURE_ENDPOINT_4O")
+        openai_4o_kwargs["api_version"] = os.getenv("AZURE_VERSION_4O")
+
 
     # STORM is a LM system so different components can be powered by different models.
     # For a good balance between cost and quality, you can choose a cheaper/faster model for conv_simulator_lm
@@ -74,8 +82,8 @@ def main(args):
     question_asker_lm = ModelClass(
         model=gpt_35_model_name, max_tokens=500, **openai_kwargs
     )
-    outline_gen_lm = ModelClass(model=gpt_4_model_name, max_tokens=400, **openai_kwargs)
-    article_gen_lm = ModelClass(model=gpt_4_model_name, max_tokens=700, **openai_kwargs)
+    outline_gen_lm = ModelClass(model=gpt_4_model_name, max_tokens=400, **openai_4o_kwargs)
+    article_gen_lm = ModelClass(model=gpt_4_model_name, max_tokens=700, **openai_4o_kwargs)
     article_polish_lm = ModelClass(
         model=gpt_4_model_name, max_tokens=4000, **openai_kwargs
     )

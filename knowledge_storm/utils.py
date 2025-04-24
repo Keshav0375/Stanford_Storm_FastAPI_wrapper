@@ -610,8 +610,12 @@ class FileIOHelper:
             return json.load(fr)
 
     @staticmethod
-    def write_str(s, path):
-        with open(path, "w") as f:
+    def write_str(s, file_path):
+        """
+        Write string to file.
+        """
+        os.makedirs(os.path.dirname(os.path.abspath(file_path)), exist_ok=True)
+        with open(file_path, "w", encoding="utf-8") as f:  # Explicitly use UTF-8
             f.write(s)
 
     @staticmethod
