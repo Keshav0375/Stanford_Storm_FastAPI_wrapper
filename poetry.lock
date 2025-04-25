@@ -1114,6 +1114,26 @@ hpack = ">=4.1,<5"
 hyperframe = ">=6.1,<7"
 
 [[package]]
+name = "hf-xet"
+version = "1.0.4"
+description = ""
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "hf_xet-1.0.4-cp37-abi3-macosx_10_12_x86_64.whl", hash = "sha256:c14dd07f8ae2b8cfd901c9572de5d653e37e00ff3067d1c1150d5a8fa1270dcb"},
+    {file = "hf_xet-1.0.4-cp37-abi3-macosx_11_0_arm64.whl", hash = "sha256:1e1e9729dcee3e40f14f346bf052905a23692b271c5f84fd165304719d6d602c"},
+    {file = "hf_xet-1.0.4-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:687b4cdcf298bae0824adc95fee6c038aabe0933e9a201a313ae702903480345"},
+    {file = "hf_xet-1.0.4-cp37-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:4614a0dfb4b91a0922228451742af3dabec1a9387d8adb041be1e3592b9bd781"},
+    {file = "hf_xet-1.0.4-cp37-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:eb529ed4718cadd3bcd0ff82e9ce29d1a1e40865cd638ecd5e658f631c27b55c"},
+    {file = "hf_xet-1.0.4-cp37-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:93789803592720aa4a64c25b50429874dab41b6e68d9fe280dc82c72a07300fb"},
+    {file = "hf_xet-1.0.4-cp37-abi3-win_amd64.whl", hash = "sha256:d2ecbc31dfd55adf090acdecaa5f5ba2e81b4e2ab38393f2fd10e733883774ad"},
+]
+
+[package.extras]
+tests = ["pytest"]
+
+[[package]]
 name = "hpack"
 version = "4.1.0"
 description = "Pure-Python HPACK header encoding"
@@ -5041,4 +5061,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.9"
-content-hash = "1391cf58468607f7485270c4cf5b6bf7167a56328067638982d3d5a85916aaaa"
+content-hash = "b75c42228e4fce9c51afad236fb191fa07e23e79a8f3a7b9b558654523b5778d"

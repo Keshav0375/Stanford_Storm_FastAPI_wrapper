@@ -1,5 +1,3 @@
-# storm_streamlit.py
-
 import streamlit as st
 import requests
 import time
@@ -33,12 +31,11 @@ with st.form("storm_form"):
     submit_button = st.form_submit_button("Generate Content")
 
 
-# Function to make API request to the standard endpoint
-def get_complete_content(topic: str, params: Dict[str, Any]) -> Dict[str, Any]:
+def get_complete_content(topic: str):
     url = f"{API_BASE_URL}/generate"
     payload = {"topic": topic}
 
-    response = requests.post(url, json=payload, params=params)
+    response = requests.post(url, json=payload)
     if response.status_code == 200:
         return response.json()
     else:
@@ -46,12 +43,11 @@ def get_complete_content(topic: str, params: Dict[str, Any]) -> Dict[str, Any]:
         return {}
 
 
-# Function to process streaming response
-def stream_content(topic: str, params: Dict[str, Any]) -> Iterator[str]:
+def stream_content(topic: str):
     url = f"{API_BASE_URL}/stream-article"
     payload = {"topic": topic}
 
-    with requests.post(url, json=payload, params=params, stream=True) as response:
+    with requests.post(url, json=payload, stream=True) as response:
         if response.status_code == 200:
             for chunk in response.iter_content(chunk_size=1):
                 if chunk:
@@ -61,15 +57,18 @@ def stream_content(topic: str, params: Dict[str, Any]) -> Iterator[str]:
             yield ""
 
 
-# Show spinner with changing messages during research
 def show_research_spinner():
     research_steps = [
-        "Retrieving information from the web...",
-        "Analyzing multiple sources...",
-        "Exploring different perspectives...",
-        "Synthesizing information...",
-        "Organizing content structure...",
-        "Finalizing research...",
+        "Choosing a topic...",
+        "Planning what to find...",
+        "Searching for information...",
+        "Reading different sources...",
+        "Taking important notes...",
+        "Comparing ideas...",
+        "Thinking about different views...",
+        "Putting ideas together...",
+        "Making an outline...",
+        "Finishing the research..."
     ]
 
     placeholder = st.empty()
@@ -77,43 +76,27 @@ def show_research_spinner():
     for i, step in enumerate(research_steps):
         with placeholder:
             st.info(f"Step {i + 1}/6: {step}")
-        time.sleep(5)  # Update message every 5 seconds
+        time.sleep(5)
 
-
-# Process the form submission
 if submit_button:
-    # Prepare parameters
-    params = {
-        "max_conv_turn": 3,
-        "max_perspective": 3,
-        "search_top_k": 3,
-        "do_research": True,
-        "do_generate_outline": True,
-        "do_generate_article": True,
-        "do_polish_article": True
-    }
 
-    # Display tabs for different outputs
     tab1, tab2, tab3 = st.tabs(["Article", "Outline", "Research Data"])
 
     with tab1:
         if is_streaming:
-            # Handle streaming response
             with st.spinner("Preparing to stream content..."):
-                # Show changing research messages
                 show_research_spinner()
 
-            # Display streaming content
             content_placeholder = st.empty()
             full_content = ""
 
             st.write("Streaming content:")
             content_container = st.empty()
 
-            for word in stream_content(topic, params):
+            for word in stream_content(topic):
                 full_content += word
                 content_container.markdown(full_content)
-                time.sleep(0.01)  # Small delay for visual effect
+                time.sleep(0.01)
 
         else:
             # Handle complete response
@@ -122,7 +105,7 @@ if submit_button:
                 show_research_spinner()
 
                 # Get the complete response
-                result = get_complete_content(topic, params)
+                result = get_complete_content(topic)
 
             # Display polished article or regular article
             article = result.get("storm_gen_article_polished") or result.get("storm_gen_article")

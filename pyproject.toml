@@ -30,6 +30,7 @@ python-multipart = "*"
 httpx = "*"
 knowledge-storm = "*"
 pytest = "*"
+hf_xet = "*"
 
 [build-system]
 requires = ["poetry-core"]

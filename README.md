@@ -1,122 +1,116 @@
-# Stanford STORM FastAPI Wrapper
+# STORM API - FastAPI Wrapper for Stanford STORM Wiki Pipeline
 
-This project provides a FastAPI wrapper for the Stanford STORM (Structure-based Optimized Retrieval Method) project, allowing you to use STORM's functionality via a RESTful API interface.
+This project provides a **FastAPI**-based wrapper around the **Stanford STORM** Wiki GPT research pipeline.  
+It allows users to generate articles, outlines, and research content programmatically through simple API endpoints.
 
-## Features
+---
 
-- **Clean API Interface**: Access STORM functionality via HTTP endpoints
-- **In-Memory Processing**: Results are returned directly in memory instead of writing to disk
-- **Streamed Responses**: Support for streaming responses as they're generated
-- **Dockerized**: Ready to run in a Docker container
-- **Poetry-managed**: All dependencies are managed via Poetry
+## 🚀 Features
 
-## Setup
+- Generate wiki-style articles for any topic
+- Stream article content word-by-word
+- Flexible control over research, outline, article generation and polishing
+- Dockerized deployment
+- Poetry-based dependency management
 
-### Prerequisites
+---
 
-- Python 3.9+
-- Poetry
-- Docker (optional)
+---
 
-### Environment Variables
+## 📦 Requirements
 
-Create a `secrets.toml` file at the root of the project with the following content:
+- Docker Desktop installed
+- Git installed
+- Internet access for pulling dependencies
+
+---
+## 🔑 Create `secrets.toml` File
+
+Before running the server, you must create a `secrets.toml` file at the root of your project.
+
+This file stores all the required API keys securely.
+
+### ✨ Example: Standard OpenAI Setup
 
 ```toml
-OPENAI_API_KEY = "your-openai-api-key"
-OPENAI_API_TYPE = "openai"  # or "azure"
+# secrets.toml
+# ============ language model configurations ============
+# Set up OpenAI API key.
+OPENAI_API_KEY="openai_api_key"
+OPENAI_API_TYPE="openai"
 
-# Required for You.com search (default retriever)
-YDC_API_KEY = "your-you-api-key"
+#OR
+# If you are using the API service provided by Microsoft Azure, include the following lines:
+#OPENAI_API_TYPE="azure"
+#
+#OPENAI_API_KEY="openai_api_key"
+#AZURE_API_BASE="api_base_url"
+#AZURE_API_VERSION="api_version"
+#GPT_3_5_DEPLOYMENT_NAME="deployment_name"
+#
+#AZURE_API_KEY_4O="openai_api_key"
+#AZURE_ENDPOINT_4O="api_base_url"
+#AZURE_VERSION_4O="api_version"
+#GPT_4O_DEPLOYMENT_NAME="deployment_name"
 
-# Optional: required only if using Azure OpenAI
-AZURE_API_BASE = "your-azure-api-base"
-AZURE_API_VERSION = "your-azure-api-version"
 
-# Optional: for other search engines
-BING_SEARCH_API_KEY = "your-bing-api-key"
-BRAVE_API_KEY = "your-brave-api-key"
-SERPER_API_KEY = "your-serper-api-key"
-TAVILY_API_KEY = "your-tavily-api-key"
-SEARXNG_API_KEY = "your-searxng-api-key"
-AZURE_AI_SEARCH_API_KEY = "your-azure-ai-search-api-key"
+# ============ retriever configurations ============
+BING_SEARCH_API_KEY="bing_search_api_key"
+
+# ============ encoder configurations ============
+ENCODER_API_TYPE="openai"
 ```
 
-### Installation
-
-#### Using Poetry
+## 🛠 Setup Instructions
 
 ```bash
-# Install dependencies
-poetry install
-
-# Run the API
-poetry run uvicorn main:app --host 0.0.0.0 --port 8000
+git clone https://github.com/Keshav0375/Stanford_Storm_FastAPI_wrapper.git
+cd Stanford_Storm_FastAPI_wrapper
+git clone https://github.com/stanford-oval/storm.git
+docker build -t storm-api .
+docker run -p 8000:8000 -v "$PWD/storm:/app/storm" storm-api
 ```
 
-#### Using Docker
+---
+
+## 🌐 API Endpoints
+
+Once the server is running at [http://localhost:8000](http://localhost:8000):
+
+| Method | Endpoint                | Description                          |
+|:------:|:------------------------|:-------------------------------------|
+| GET    | `/health`                | Health check for server              |
+| GET    | `/status`                | Check loaded API keys and configurations |
+| POST   | `/api/storm/generate`     | Generate wiki content (full response) |
+| POST   | `/api/storm/stream-article` | Stream polished article word-by-word |
+
+
+# 🚀 Final Quick Start Guide
+
+## 🐳 1. Start Docker Desktop
+
+Make sure **Docker Desktop** is running on your system.
+
+---
+
+## 📥 2. Clone the Project Repository
 
 ```bash
-# Build the Docker image
-docker build -t core-api .
-
-# Run the container
-docker run -p 8000:8000 -v $(pwd)/secrets.toml:/app/secrets/secrets.toml core-api
+git clone https://github.com/Keshav0375/Stanford_Storm_FastAPI_wrapper.git
+cd Stanford_Storm_FastAPI_wrapper
 ```
 
-## API Usage
+## 🔑 3. Create secrets.toml file as instructed.
 
-### Generate STORM Content
 
-```bash
-curl -X POST http://localhost:8000/api/storm \
-  -H "Content-Type: application/json" \
-  -d '{
-    "topic": "The impact of artificial intelligence on healthcare",
-    "max_conv_turn": 3,
-    "max_perspective": 3,
-    "search_top_k": 3,
-    "retriever": "you",
-    "do_research": true,
-    "do_generate_outline": true,
-    "do_generate_article": true,
-    "do_polish_article": false
-  }'
+## 📚 4. Clone Stanford STORM Repository
+```commandline
+git clone https://github.com/stanford-oval/storm.git
 ```
-
-### Stream STORM Content
-
-```bash
-curl -X POST http://localhost:8000/api/storm/stream \
-  -H "Content-Type: application/json" \
-  -d '{
-    "topic": "The impact of artificial intelligence on healthcare",
-    "max_conv_turn": 3,
-    "max_perspective": 3,
-    "search_top_k": 3,
-    "retriever": "you",
-    "do_research": true,
-    "do_generate_outline": true,
-    "do_generate_article": true,
-    "stream": true
-  }'
+## 🐳 5. Build and Run the Docker Container
 ```
-
-## API Endpoints
-
-- `GET /health`: Health check endpoint
-- `GET /status`: Check the status of environment variables and available retrievers
-- `POST /api/storm`: Generate STORM content
-- `POST /api/storm/stream`: Stream STORM content as it's being generated
-
-## Development
-
-To run tests:
-
-```bash
-poetry run pytest
+docker build -t storm-api .
+docker run -p 8000:8000 -v "$PWD/storm:/app/storm" storm-api
 ```
+# Ready to Go
 
-## License
-
-This project is licensed under the terms of the same license as the Stanford STORM project.
