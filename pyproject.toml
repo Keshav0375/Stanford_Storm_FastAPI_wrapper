@@ -1,0 +1,41 @@
+[tool.poetry]
+name = "storm-api"
+version = "0.1.0"
+description = "FastAPI wrapper for the STORM Wiki pipeline"
+authors = ["keshxv <arri@uwindsor.ca>"]
+packages = [
+    { include = "api" },
+    { include = "core" },
+    { include = "utils" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+fastapi = "^0.110.0"
+uvicorn = { extras = ["standard"], version = "^0.27.0" }
+dspy_ai = "2.4.9"
+wikipedia = "1.4.0"
+sentence-transformers = "*"
+torch = { version = "2.1.2+cpu", source = "pytorch-cpu" }
+langchain-text-splitters = "*"
+trafilatura = "*"
+langchain-huggingface = "*"
+qdrant-client = "*"
+langchain-qdrant = "*"
+numpy = "1.26.4"
+litellm = "1.59.3"
+diskcache = "*"
+python-multipart = "*"
+httpx = "*"
+knowledge-storm = "*"
+pytest = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[[tool.poetry.source]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+priority = "explicit"
