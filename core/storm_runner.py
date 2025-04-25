@@ -4,13 +4,13 @@ from typing import Dict, Any, Optional
 import tempfile
 import shutil
 
-from knowledge_storm import (
+from storm.knowledge_storm import (
     STORMWikiRunnerArguments,
     STORMWikiRunner,
     STORMWikiLMConfigs,
 )
-from knowledge_storm.lm import OpenAIModel, AzureOpenAIModel
-from knowledge_storm.rm import (
+from storm.knowledge_storm.lm import OpenAIModel, AzureOpenAIModel
+from storm.knowledge_storm.rm import (
     YouRM,
     BingSearch,
     BraveRM,
@@ -21,7 +21,7 @@ from knowledge_storm.rm import (
     AzureAISearch,
 )
 from utils.file_io import read_json_file, read_text_file
-from knowledge_storm.utils import load_api_key
+from storm.knowledge_storm.utils import load_api_key
 
 def get_lm_configs():
     """Create and configure language models."""
@@ -45,9 +45,12 @@ def get_lm_configs():
     )
 
     gpt_35_model_name = (
-        "gpt-3.5-turbo" if os.getenv("OPENAI_API_TYPE") == "openai" else "slideoo-chat-1"
+        "gpt-3.5-turbo" if os.getenv("OPENAI_API_TYPE") == "openai" else os.getenv("GPT_3_5_DEPLOYMENT_NAME")
     )
-    gpt_4_model_name = "slideoo-2-gpt-40"
+
+    gpt_4_model_name = (
+        "gpt-4o" if os.getenv("OPENAI_API_TYPE") == "openai" else os.getenv("GPT_4O_DEPLOYMENT_NAME")
+    )
 
     if os.getenv("OPENAI_API_TYPE") == "azure":
         openai_kwargs["azure_endpoint"] = os.getenv("AZURE_API_BASE")
@@ -56,10 +59,10 @@ def get_lm_configs():
         openai_4o_kwargs["api_version"] = os.getenv("AZURE_VERSION_4O")
 
     conv_simulator_lm = ModelClass(
-        model=gpt_35_model_name, max_tokens=15000, **openai_kwargs
+        model=gpt_35_model_name, max_tokens=1000, **openai_kwargs
     )
     question_asker_lm = ModelClass(
-        model=gpt_35_model_name, max_tokens=15000, **openai_kwargs
+        model=gpt_35_model_name, max_tokens=1000, **openai_kwargs
     )
     outline_gen_lm = ModelClass(model=gpt_4_model_name, max_tokens=2500, **openai_4o_kwargs)
     article_gen_lm = ModelClass(model=gpt_4_model_name, max_tokens=2500, **openai_4o_kwargs)

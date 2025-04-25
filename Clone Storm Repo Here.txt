@@ -1,0 +1,15 @@
+Please clone Storm Repo in the same directory for smooth working of FastAPI application.
+
+Use: git clone https://github.com/stanford-oval/storm.git
+
+
+
+override knowledge_storm/utils.py
+@staticmethod
+    def write_str(s, file_path):
+        """
+        Write string to file.
+        """
+        os.makedirs(os.path.dirname(os.path.abspath(file_path)), exist_ok=True)
+        with open(file_path, "w", encoding="utf-8") as f:  # Explicitly use UTF-8
+            f.write(s)
