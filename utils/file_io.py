@@ -61,3 +61,16 @@ def write_text_file(text: str, file_path: str) -> None:
             f.write(text)
     except Exception as e:
         print(f"Error writing to text file {file_path}: {e}")
+
+
+def write_str(s: str, file_path: str) -> None:
+    """
+    Enhanced version of write_str that creates directories and uses UTF-8 encoding.
+    This replaces the STORM version of the same function.
+    """
+    try:
+        os.makedirs(os.path.dirname(os.path.abspath(file_path)), exist_ok=True)
+        with open(file_path, "w", encoding="utf-8") as f:
+            f.write(s)
+    except Exception as e:
+        print(f"Error writing string to file {file_path}: {e}")

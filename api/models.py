@@ -7,9 +7,9 @@ class TopicRequest(BaseModel):
 
 
 class WikiResponse(BaseModel):
-    raw_search_results: Optional[Dict[str, Any]] = None
     direct_gen_outline: Optional[str] = None
     storm_gen_outline: Optional[str] = None
-    url_to_info: Optional[Dict[str, Any]] = None
     storm_gen_article: Optional[str] = None
     storm_gen_article_polished: Optional[str] = None
+    url_to_info: Optional[Dict[str, Any]] = None
+    raw_search_results: Optional[Dict[str, Any]] = None

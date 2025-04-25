@@ -3,6 +3,9 @@ import json
 from typing import Dict, Any, Optional
 import tempfile
 import shutil
+import logging
+import time
+logger = logging.getLogger("storm_runner")
 
 from storm.knowledge_storm import (
     STORMWikiRunnerArguments,
@@ -25,9 +28,11 @@ from storm.knowledge_storm.utils import load_api_key
 
 def get_lm_configs():
     """Create and configure language models."""
+    logger.info("Loading API keys from secrets.toml")
     load_api_key(toml_file_path="secrets.toml")
     lm_configs = STORMWikiLMConfigs()
 
+    logger.info("Configuring language models")
     openai_kwargs = {
         "api_key": os.getenv("OPENAI_API_KEY"),
         "temperature": 1.0,
@@ -53,6 +58,7 @@ def get_lm_configs():
     )
 
     if os.getenv("OPENAI_API_TYPE") == "azure":
+        logger.info("Configuring Azure OpenAI settings")
         openai_kwargs["azure_endpoint"] = os.getenv("AZURE_API_BASE")
         openai_kwargs["api_version"] = os.getenv("AZURE_API_VERSION")
         openai_4o_kwargs["azure_endpoint"] = os.getenv("AZURE_ENDPOINT_4O")
@@ -75,12 +81,13 @@ def get_lm_configs():
     lm_configs.set_outline_gen_lm(outline_gen_lm)
     lm_configs.set_article_gen_lm(article_gen_lm)
     lm_configs.set_article_polish_lm(article_polish_lm)
-
+    logger.info("Language model configuration complete")
     return lm_configs
 
 
 def get_retrieval_module(search_top_k: int = 3):
     """Create and configure retrieval module based on available API keys."""
+    logger.info(f"Setting up retrieval module with search_top_k={search_top_k}")
     retriever_priority = [
         ("you", "YDC_API_KEY", YouRM),
         ("bing", "BING_SEARCH_API_KEY", BingSearch),
@@ -95,6 +102,7 @@ def get_retrieval_module(search_top_k: int = 3):
     for retriever_name, env_key, RetrieverClass in retriever_priority:
         api_key = os.getenv(env_key)
         if api_key:
+            logger.info(f"Using {retriever_name} as search retriever")
             retriever_kwargs = {"k": search_top_k}
 
             if retriever_name == "you":
@@ -116,7 +124,7 @@ def get_retrieval_module(search_top_k: int = 3):
 
             return RetrieverClass(**retriever_kwargs)
 
-    # Fall back to DuckDuckGo if no API key is available
+    logger.warning("No search API keys found, falling back to DuckDuckGo")
     return DuckDuckGoSearchRM(k=search_top_k, safe_search="On", region="us-en")
 
 
@@ -133,7 +141,10 @@ class APISTORMWikiRunner(STORMWikiRunner):
             return_json: bool = True
     ) -> Dict[str, Any]:
         """Run the STORM Wiki pipeline and return results as JSON."""
-        # Run the normal pipeline process
+
+        start_time = time.time()
+        logger.info(f"Starting STORM Wiki pipeline for topic: {topic}")
+
         self.run(
             topic=topic,
             do_research=do_research,
@@ -146,6 +157,7 @@ class APISTORMWikiRunner(STORMWikiRunner):
         if return_json:
             return self.collect_results()
 
+        logger.info(f"STORM Wiki pipeline completed in {time.time() - start_time:.2f} seconds")
         return {}
 
     def collect_results(self) -> Dict[str, Any]:
@@ -204,5 +216,5 @@ def get_storm_runner(
         search_top_k=search_top_k,
         max_thread_num=max_thread_num,
     )
-
+    logger.info("STORM runner configuration complete")
     return APISTORMWikiRunner(engine_args, lm_configs, rm)
