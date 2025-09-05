@@ -683,7 +683,7 @@ This project is built upon the groundbreaking research and open-source STORM pip
 
 **Revolutionizing Research Through AI-Powered Intelligence**
 
-[🚀 Try the API](http://localhost:8000/docs) | [⭐ Star us on GitHub](https://github.com/Keshav0375/Stanford_Storm_FastAPI_wrapper) | [🐛 Report Issues](https://github.com/Keshav0375/Stanford_Storm_FastAPI_wrapper/issues) | [💬 Join Discussion](https://github.com/Keshav0375/Stanford_Storm_FastAPI_wrapper/discussions)
+[🚀 Try the API]() | [⭐ Star us on GitHub](https://github.com/Keshav0375/Stanford_Storm_FastAPI_wrapper) | [🐛 Report Issues](https://github.com/Keshav0375/Stanford_Storm_FastAPI_wrapper/issues) | [💬 Join Discussion](https://github.com/Keshav0375/Stanford_Storm_FastAPI_wrapper/discussions)
 
 **Built with ❤️ for the Research Community**
 
